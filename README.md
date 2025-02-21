@@ -7,7 +7,7 @@ experiment flows / chatflows for flowise
 2. Promotion of RAG to Adopt Ring
 ![image](https://github.com/user-attachments/assets/d72c08f2-746c-4f23-970b-12feb4fec89b)
 
-3. RAG vs Finetuning Vs other approaches
+3. RAG vs Finetuning Vs other approaches from Four approaches to LLMs in production (AWS Generative AI Summit)
 ![image](https://github.com/user-attachments/assets/d15bbd72-d31c-404d-ac5e-ae5c37d4f6dd)
 
 4. Table Structure

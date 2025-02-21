@@ -1,0 +1,2207 @@
+{
+  "nodes": [
+    {
+      "width": 300,
+      "height": 509,
+      "id": "promptTemplate_0",
+      "position": {
+        "x": 384.4880563109088,
+        "y": 253.48974179902635
+      },
+      "type": "customNode",
+      "data": {
+        "id": "promptTemplate_0",
+        "label": "Prompt Template",
+        "version": 1,
+        "name": "promptTemplate",
+        "type": "PromptTemplate",
+        "baseClasses": [
+          "PromptTemplate",
+          "BaseStringPromptTemplate",
+          "BasePromptTemplate",
+          "Runnable"
+        ],
+        "category": "Prompts",
+        "description": "Schema to represent a basic prompt for an LLM",
+        "inputParams": [
+          {
+            "label": "Template",
+            "name": "template",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "What is a good name for a company that makes {product}?",
+            "id": "promptTemplate_0-input-template-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "promptTemplate_0-input-promptValues-json"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "template": "You are a MySQL expert. Given an input question, create a syntactically correct MySQL query to run with adding Limit of returned rows to 7 at the end of the statement and make sure to return all columns.\n\nHere is the relevant table info:\n{schema}\n\nBelow are a number of examples of questions and their corresponding SQL queries.\n\nUser input: List all artists with limit to 7.\nSQL Query: SELECT * FROM Artist Limit 7;\n\nUser input: List all artists with limit to 7, order them descending by artist.\nSQL Query: SELECT * FROM Artist ORDER BY MarketCap DESC Limit 7;\n\nUser input: Find all albums for the artist 'AC/DC'.\nSQL Query: SELECT * FROM Album WHERE ArtistId = (SELECT ArtistId FROM Artist WHERE Name = 'AC/DC');\n\nUser input: List all tracks in the 'Rock' genre.\nSQL Query: SELECT * FROM Track WHERE GenreId = (SELECT GenreId FROM Genre WHERE Name = 'Rock');\n\nUser input: Find the total duration of all tracks.\nSQL Query: SELECT SUM(Milliseconds) FROM Track;\n\nUser input: List all customers from Canada.\nSQL Query: SELECT * FROM Customer WHERE Country = 'Canada';\n\nUser input: {question}\nSQL query:",
+          "promptValues": "{\"schema\":\"{{customFunction_2.data.instance}}\",\"question\":\"{{question}}\",\"topK\":3}"
+        },
+        "outputAnchors": [
+          {
+            "id": "promptTemplate_0-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+            "name": "promptTemplate",
+            "label": "PromptTemplate",
+            "type": "PromptTemplate | BaseStringPromptTemplate | BasePromptTemplate | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 384.4880563109088,
+        "y": 253.48974179902635
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 506,
+      "id": "llmChain_0",
+      "position": {
+        "x": 770.4559230968546,
+        "y": -127.11351409346554
+      },
+      "type": "customNode",
+      "data": {
+        "id": "llmChain_0",
+        "label": "LLM Chain",
+        "version": 3,
+        "name": "llmChain",
+        "type": "LLMChain",
+        "baseClasses": [
+          "LLMChain",
+          "BaseChain",
+          "Runnable"
+        ],
+        "category": "Chains",
+        "description": "Chain to run queries against LLMs",
+        "inputParams": [
+          {
+            "label": "Chain Name",
+            "name": "chainName",
+            "type": "string",
+            "placeholder": "Name Your Chain",
+            "optional": true,
+            "id": "llmChain_0-input-chainName-string"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Language Model",
+            "name": "model",
+            "type": "BaseLanguageModel",
+            "id": "llmChain_0-input-model-BaseLanguageModel"
+          },
+          {
+            "label": "Prompt",
+            "name": "prompt",
+            "type": "BasePromptTemplate",
+            "id": "llmChain_0-input-prompt-BasePromptTemplate"
+          },
+          {
+            "label": "Output Parser",
+            "name": "outputParser",
+            "type": "BaseLLMOutputParser",
+            "optional": true,
+            "id": "llmChain_0-input-outputParser-BaseLLMOutputParser"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "llmChain_0-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "model": "{{ollama_0.data.instance}}",
+          "prompt": "{{promptTemplate_0.data.instance}}",
+          "outputParser": "",
+          "inputModeration": "",
+          "chainName": "SQL Query Chain"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "options": [
+              {
+                "id": "llmChain_0-output-llmChain-LLMChain|BaseChain|Runnable",
+                "name": "llmChain",
+                "label": "LLM Chain",
+                "type": "LLMChain | BaseChain | Runnable"
+              },
+              {
+                "id": "llmChain_0-output-outputPrediction-string|json",
+                "name": "outputPrediction",
+                "label": "Output Prediction",
+                "type": "string | json"
+              }
+            ],
+            "default": "llmChain"
+          }
+        ],
+        "outputs": {
+          "output": "outputPrediction"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 770.4559230968546,
+        "y": -127.11351409346554
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 506,
+      "id": "llmChain_1",
+      "position": {
+        "x": 3089.9937691022837,
+        "y": -109.24001734925716
+      },
+      "type": "customNode",
+      "data": {
+        "id": "llmChain_1",
+        "label": "LLM Chain",
+        "version": 3,
+        "name": "llmChain",
+        "type": "LLMChain",
+        "baseClasses": [
+          "LLMChain",
+          "BaseChain",
+          "Runnable"
+        ],
+        "category": "Chains",
+        "description": "Chain to run queries against LLMs",
+        "inputParams": [
+          {
+            "label": "Chain Name",
+            "name": "chainName",
+            "type": "string",
+            "placeholder": "Name Your Chain",
+            "optional": true,
+            "id": "llmChain_1-input-chainName-string"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Language Model",
+            "name": "model",
+            "type": "BaseLanguageModel",
+            "id": "llmChain_1-input-model-BaseLanguageModel"
+          },
+          {
+            "label": "Prompt",
+            "name": "prompt",
+            "type": "BasePromptTemplate",
+            "id": "llmChain_1-input-prompt-BasePromptTemplate"
+          },
+          {
+            "label": "Output Parser",
+            "name": "outputParser",
+            "type": "BaseLLMOutputParser",
+            "optional": true,
+            "id": "llmChain_1-input-outputParser-BaseLLMOutputParser"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "llmChain_1-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "model": "{{ollama_1.data.instance}}",
+          "prompt": "{{promptTemplate_1.data.instance}}",
+          "outputParser": "",
+          "inputModeration": "",
+          "chainName": "Final Chain"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "options": [
+              {
+                "id": "llmChain_1-output-llmChain-LLMChain|BaseChain|Runnable",
+                "name": "llmChain",
+                "label": "LLM Chain",
+                "type": "LLMChain | BaseChain | Runnable"
+              },
+              {
+                "id": "llmChain_1-output-outputPrediction-string|json",
+                "name": "outputPrediction",
+                "label": "Output Prediction",
+                "type": "string | json"
+              }
+            ],
+            "default": "llmChain"
+          }
+        ],
+        "outputs": {
+          "output": "llmChain"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 3089.9937691022837,
+        "y": -109.24001734925716
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 673,
+      "id": "customFunction_2",
+      "position": {
+        "x": -35.46356761272412,
+        "y": -130.67643262274873
+      },
+      "type": "customNode",
+      "data": {
+        "id": "customFunction_2",
+        "label": "Custom JS Function",
+        "version": 2,
+        "name": "customFunction",
+        "type": "CustomFunction",
+        "baseClasses": [
+          "CustomFunction",
+          "Utilities"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Execute custom javascript function",
+        "inputParams": [
+          {
+            "label": "Input Variables",
+            "name": "functionInputVariables",
+            "description": "Input variables can be used in the function with prefix $. For example: $var",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "customFunction_2-input-functionInputVariables-json"
+          },
+          {
+            "label": "Function Name",
+            "name": "functionName",
+            "type": "string",
+            "optional": true,
+            "placeholder": "My Function",
+            "id": "customFunction_2-input-functionName-string"
+          },
+          {
+            "label": "Javascript Function",
+            "name": "javascriptFunction",
+            "type": "code",
+            "id": "customFunction_2-input-javascriptFunction-code"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "functionInputVariables": "",
+          "functionName": "Get SQL Schema Prompt",
+          "javascriptFunction": "const HOST = 'host.docker.internal';\nconst USER = 'root';\nconst PASSWORD = 'mysecretpassword';\nconst DATABASE = 'trades';\nconst TABLE = 'company';\nconst mysql = require('mysql2/promise');\n\nlet sqlSchemaPrompt;\n\n/**\n * Ideal prompt contains schema info and examples\n * Follows best practices as specified form https://arxiv.org/abs/2204.00498\n * =========================================\n * CREATE TABLE samples (firstName varchar NOT NULL, lastName varchar)\n * SELECT * FROM samples LIMIT 3\n * firstName lastName\n * Stephen Tyler\n * Jack McGinnis\n * Steven Repici\n * =========================================\n*/\nfunction getSQLPrompt() {\n  return new Promise(async (resolve, reject) => {\n    try {\n      const singleStoreConnection = mysql.createPool({\n        host: HOST,\n        user: USER,\n        password: PASSWORD,\n        database: DATABASE,\n      });\n  \n      // Get schema info\n      const [schemaInfo] = await singleStoreConnection.execute(\n        `SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = \"${TABLE}\"`\n      );\n  \n      const createColumns = [];\n      const columnNames = [];\n  \n      for (const schemaData of schemaInfo) {\n        columnNames.push(`${schemaData['COLUMN_NAME']}`);\n        createColumns.push(`${schemaData['COLUMN_NAME']} ${schemaData['COLUMN_TYPE']} ${schemaData['IS_NULLABLE'] === 'NO' ? 'NOT NULL' : ''}`);\n      }\n  \n      const sqlCreateTableQuery = `CREATE TABLE company (${createColumns.join(', ')})`;\n      const sqlSelectTableQuery = `SELECT * FROM company LIMIT 3`;\n  \n      // Get first 3 rows\n      const [rows] = await singleStoreConnection.execute(\n          sqlSelectTableQuery,\n      );\n      \n      const allValues = [];\n      for (const row of rows) {\n          const rowValues = [];\n          for (const colName in row) {\n              rowValues.push(row[colName]);\n          }\n          allValues.push(rowValues.join(' '));\n      }\n  \n      sqlSchemaPrompt = sqlCreateTableQuery + '\\n' + sqlSelectTableQuery + '\\n' + columnNames.join(' ') + '\\n' + allValues.join('\\n');\n      \n      resolve();\n    } catch (e) {\n      console.error(e);\n      return reject(e);\n    }\n  });\n}\n\nasync function main() {\n    await getSQLPrompt();\n}\n\nawait main();\n\nreturn sqlSchemaPrompt;"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "customFunction_2-output-output-string|number|boolean|json|array",
+                "name": "output",
+                "label": "Output",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              },
+              {
+                "id": "customFunction_2-output-EndingNode-CustomFunction",
+                "name": "EndingNode",
+                "label": "Ending Node",
+                "description": "",
+                "type": "CustomFunction"
+              }
+            ],
+            "default": "output"
+          }
+        ],
+        "outputs": {
+          "output": "output"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": -35.46356761272412,
+        "y": -130.67643262274873
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 673,
+      "id": "customFunction_1",
+      "position": {
+        "x": 1887.4670208331604,
+        "y": -275.95340782935716
+      },
+      "type": "customNode",
+      "data": {
+        "id": "customFunction_1",
+        "label": "Custom JS Function",
+        "version": 2,
+        "name": "customFunction",
+        "type": "CustomFunction",
+        "baseClasses": [
+          "CustomFunction",
+          "Utilities"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Execute custom javascript function",
+        "inputParams": [
+          {
+            "label": "Input Variables",
+            "name": "functionInputVariables",
+            "description": "Input variables can be used in the function with prefix $. For example: $var",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "customFunction_1-input-functionInputVariables-json"
+          },
+          {
+            "label": "Function Name",
+            "name": "functionName",
+            "type": "string",
+            "optional": true,
+            "placeholder": "My Function",
+            "id": "customFunction_1-input-functionName-string"
+          },
+          {
+            "label": "Javascript Function",
+            "name": "javascriptFunction",
+            "type": "code",
+            "id": "customFunction_1-input-javascriptFunction-code"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "functionInputVariables": "{\"sqlQuery\":\"{{setVariable_1.data.instance}}\"}",
+          "functionName": "Run SQL Query",
+          "javascriptFunction": "const HOST = 'host.docker.internal';\nconst USER = 'root';\nconst PASSWORD = 'mysecretpassword';\nconst DATABASE = 'trades';\nconst TABLE = 'company';\nconst mysql = require('mysql2/promise');\n\nlet result;\n\nfunction getSQLResult() {\n  return new Promise(async (resolve, reject) => {\n    try {\n      const singleStoreConnection = mysql.createPool({\n        host: HOST,\n        user: USER,\n        password: PASSWORD,\n        database: DATABASE,\n      });\n     \n      const [rows] = await singleStoreConnection.execute(\n        $sqlQuery\n      );\n  \n      result = JSON.stringify(rows)\n      console.log(result)\n      \n      resolve();\n    } catch (e) {\n      console.error(e);\n      return reject(e);\n    }\n  });\n}\n\nasync function main() {\n    await getSQLResult();\n}\n\nawait main();\n\nreturn result;"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "customFunction_1-output-output-string|number|boolean|json|array",
+                "name": "output",
+                "label": "Output",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              },
+              {
+                "id": "customFunction_1-output-EndingNode-CustomFunction",
+                "name": "EndingNode",
+                "label": "Ending Node",
+                "description": "",
+                "type": "CustomFunction"
+              }
+            ],
+            "default": "output"
+          }
+        ],
+        "outputs": {
+          "output": "output"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1887.4670208331604,
+        "y": -275.95340782935716
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 509,
+      "id": "promptTemplate_1",
+      "position": {
+        "x": 2655.2632506040304,
+        "y": 218.145615216618
+      },
+      "type": "customNode",
+      "data": {
+        "id": "promptTemplate_1",
+        "label": "Prompt Template",
+        "version": 1,
+        "name": "promptTemplate",
+        "type": "PromptTemplate",
+        "baseClasses": [
+          "PromptTemplate",
+          "BaseStringPromptTemplate",
+          "BasePromptTemplate",
+          "Runnable"
+        ],
+        "category": "Prompts",
+        "description": "Schema to represent a basic prompt for an LLM",
+        "inputParams": [
+          {
+            "label": "Template",
+            "name": "template",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "What is a good name for a company that makes {product}?",
+            "id": "promptTemplate_1-input-template-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "promptTemplate_1-input-promptValues-json"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "template": "Given the following user question, corresponding SQL query, and SQL result, answer the user question as detailed as possible in tabular format when writing the output including all columns retreived from the query. \n\nFor the column that requires sorting, ensure proper numerical sorting if values are stored as strings by converting all numbers to millions if they are in billions when required and if the question asks for ordering the results.\n\nNote that B denotes Billions, M Denotes Millions wherever applicable.\n\nQuestion: {question}\n\nSQL Query: {sqlQuery}\n\nSQL Result: {sqlResponse}\n\nAnswer:\n",
+          "promptValues": "{\"question\":\"{{question}}\",\"sqlResponse\":\"{{customFunction_1.data.instance}}\",\"sqlQuery\":\"{{getVariable_1.data.instance}}\"}"
+        },
+        "outputAnchors": [
+          {
+            "id": "promptTemplate_1-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+            "name": "promptTemplate",
+            "label": "PromptTemplate",
+            "type": "PromptTemplate | BaseStringPromptTemplate | BasePromptTemplate | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 2655.2632506040304,
+        "y": 218.145615216618
+      }
+    },
+    {
+      "width": 300,
+      "height": 303,
+      "id": "getVariable_1",
+      "position": {
+        "x": 2272.8555266616872,
+        "y": 24.11364076336241
+      },
+      "type": "customNode",
+      "data": {
+        "id": "getVariable_1",
+        "label": "Get Variable",
+        "version": 2,
+        "name": "getVariable",
+        "type": "GetVariable",
+        "baseClasses": [
+          "GetVariable",
+          "Utilities"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Get variable that was saved using Set Variable node",
+        "inputParams": [
+          {
+            "label": "Variable Name",
+            "name": "variableName",
+            "type": "string",
+            "placeholder": "var1",
+            "id": "getVariable_1-input-variableName-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "variableName": "sqlQuery"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "getVariable_1-output-output-string|number|boolean|json|array",
+                "name": "output",
+                "label": "Output",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              }
+            ],
+            "default": "output"
+          }
+        ],
+        "outputs": {
+          "output": "output"
+        },
+        "selected": false
+      },
+      "positionAbsolute": {
+        "x": 2272.8555266616872,
+        "y": 24.11364076336241
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 354,
+      "id": "setVariable_1",
+      "position": {
+        "x": 1516.338224315744,
+        "y": -133.6986023683283
+      },
+      "type": "customNode",
+      "data": {
+        "id": "setVariable_1",
+        "label": "Set Variable",
+        "version": 2,
+        "name": "setVariable",
+        "type": "SetVariable",
+        "baseClasses": [
+          "SetVariable",
+          "Utilities"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Set variable which can be retrieved at a later stage. Variable is only available during runtime.",
+        "inputParams": [
+          {
+            "label": "Variable Name",
+            "name": "variableName",
+            "type": "string",
+            "placeholder": "var1",
+            "id": "setVariable_1-input-variableName-string"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Input",
+            "name": "input",
+            "type": "string | number | boolean | json | array",
+            "optional": true,
+            "list": true,
+            "id": "setVariable_1-input-input-string | number | boolean | json | array"
+          }
+        ],
+        "inputs": {
+          "input": [
+            "{{ifElseFunction_0.data.instance}}"
+          ],
+          "variableName": "sqlQuery"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "setVariable_1-output-output-string|number|boolean|json|array",
+                "name": "output",
+                "label": "Output",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              }
+            ],
+            "default": "output"
+          }
+        ],
+        "outputs": {
+          "output": "output"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1516.338224315744,
+        "y": -133.6986023683283
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 764,
+      "id": "ifElseFunction_0",
+      "position": {
+        "x": 1145.8676640155315,
+        "y": -227.72268832562068
+      },
+      "type": "customNode",
+      "data": {
+        "id": "ifElseFunction_0",
+        "label": "IfElse Function",
+        "version": 2,
+        "name": "ifElseFunction",
+        "type": "IfElseFunction",
+        "baseClasses": [
+          "IfElseFunction",
+          "Utilities"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Split flows based on If Else javascript functions",
+        "inputParams": [
+          {
+            "label": "Input Variables",
+            "name": "functionInputVariables",
+            "description": "Input variables can be used in the function with prefix $. For example: $var",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "ifElseFunction_0-input-functionInputVariables-json"
+          },
+          {
+            "label": "IfElse Name",
+            "name": "functionName",
+            "type": "string",
+            "optional": true,
+            "placeholder": "If Condition Match",
+            "id": "ifElseFunction_0-input-functionName-string"
+          },
+          {
+            "label": "If Function",
+            "name": "ifFunction",
+            "description": "Function must return a value",
+            "type": "code",
+            "rows": 2,
+            "default": "if (\"hello\" == \"hello\") {\n    return true;\n}",
+            "id": "ifElseFunction_0-input-ifFunction-code"
+          },
+          {
+            "label": "Else Function",
+            "name": "elseFunction",
+            "description": "Function must return a value",
+            "type": "code",
+            "rows": 2,
+            "default": "return false;",
+            "id": "ifElseFunction_0-input-elseFunction-code"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "functionInputVariables": "{\"sqlQuery\":\"{{llmChain_0.data.instance}}\"}",
+          "functionName": "IF SQL Query contains SELECT and WHERE",
+          "ifFunction": "const cleanSqlQuery = $sqlQuery\n    .replace(/<\\/?thinking>/g, '')  // Remove <thinking> tags\n    .replace(/\\n/g, ' ')  // Remove new lines\n    .match(/```sql([\\s\\S]*?)```/)?.[1]?.trim() || \"\";  // Extract SQL block\n\n// Extract the first SQL SELECT statement\nconst extractedSql = cleanSqlQuery.match(/SELECT\\s.*?(?:\\n|$)/gi)?.[0]?.trim() || \"\";\n\n// Ensure it's a valid SQL query containing WHERE clause\nif (/SELECT\\s.*?\\sWHERE\\s/gi.test(extractedSql)) {\n    return extractedSql;\n}",
+          "elseFunction": "return $sqlQuery;"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "ifElseFunction_0-output-returnTrue-string|number|boolean|json|array",
+                "name": "returnTrue",
+                "label": "True",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              },
+              {
+                "id": "ifElseFunction_0-output-returnFalse-string|number|boolean|json|array",
+                "name": "returnFalse",
+                "label": "False",
+                "description": "",
+                "type": "string | number | boolean | json | array"
+              }
+            ],
+            "default": "returnTrue"
+          }
+        ],
+        "outputs": {
+          "output": "returnTrue"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1145.8676640155315,
+        "y": -227.72268832562068
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 509,
+      "id": "promptTemplate_2",
+      "position": {
+        "x": 1193.7489579044463,
+        "y": 615.4009446588724
+      },
+      "type": "customNode",
+      "data": {
+        "id": "promptTemplate_2",
+        "label": "Prompt Template",
+        "version": 1,
+        "name": "promptTemplate",
+        "type": "PromptTemplate",
+        "baseClasses": [
+          "PromptTemplate",
+          "BaseStringPromptTemplate",
+          "BasePromptTemplate",
+          "Runnable"
+        ],
+        "category": "Prompts",
+        "description": "Schema to represent a basic prompt for an LLM",
+        "inputParams": [
+          {
+            "label": "Template",
+            "name": "template",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "What is a good name for a company that makes {product}?",
+            "id": "promptTemplate_2-input-template-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "promptTemplate_2-input-promptValues-json"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "template": "Politely say \"I'm not able to answer query\"",
+          "promptValues": "{\"schema\":\"{{setVariable_0.data.instance}}\",\"question\":\"{{question}}\"}"
+        },
+        "outputAnchors": [
+          {
+            "id": "promptTemplate_2-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+            "name": "promptTemplate",
+            "label": "PromptTemplate",
+            "type": "PromptTemplate | BaseStringPromptTemplate | BasePromptTemplate | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1193.7489579044463,
+        "y": 615.4009446588724
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 506,
+      "id": "llmChain_2",
+      "position": {
+        "x": 1914.509823868027,
+        "y": 622.3435967391327
+      },
+      "type": "customNode",
+      "data": {
+        "id": "llmChain_2",
+        "label": "LLM Chain",
+        "version": 3,
+        "name": "llmChain",
+        "type": "LLMChain",
+        "baseClasses": [
+          "LLMChain",
+          "BaseChain",
+          "Runnable"
+        ],
+        "category": "Chains",
+        "description": "Chain to run queries against LLMs",
+        "inputParams": [
+          {
+            "label": "Chain Name",
+            "name": "chainName",
+            "type": "string",
+            "placeholder": "Name Your Chain",
+            "optional": true,
+            "id": "llmChain_2-input-chainName-string"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Language Model",
+            "name": "model",
+            "type": "BaseLanguageModel",
+            "id": "llmChain_2-input-model-BaseLanguageModel"
+          },
+          {
+            "label": "Prompt",
+            "name": "prompt",
+            "type": "BasePromptTemplate",
+            "id": "llmChain_2-input-prompt-BasePromptTemplate"
+          },
+          {
+            "label": "Output Parser",
+            "name": "outputParser",
+            "type": "BaseLLMOutputParser",
+            "optional": true,
+            "id": "llmChain_2-input-outputParser-BaseLLMOutputParser"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "llmChain_2-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "model": "{{ollama_2.data.instance}}",
+          "prompt": "{{promptTemplate_2.data.instance}}",
+          "outputParser": "",
+          "inputModeration": "",
+          "chainName": "Fallback Chain"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "options": [
+              {
+                "id": "llmChain_2-output-llmChain-LLMChain|BaseChain|Runnable",
+                "name": "llmChain",
+                "label": "LLM Chain",
+                "type": "LLMChain | BaseChain | Runnable"
+              },
+              {
+                "id": "llmChain_2-output-outputPrediction-string|json",
+                "name": "outputPrediction",
+                "label": "Output Prediction",
+                "type": "string | json"
+              }
+            ],
+            "default": "llmChain"
+          }
+        ],
+        "outputs": {
+          "output": "llmChain"
+        },
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1914.509823868027,
+        "y": 622.3435967391327
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_0",
+      "position": {
+        "x": -18.950231412347364,
+        "y": -192.2980180516393
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_0",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_0-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "First, get SQL database schema"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_0-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 41,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -18.950231412347364,
+        "y": -192.2980180516393
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_1",
+      "position": {
+        "x": 1510.6324834799852,
+        "y": -221.78240261184442
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_1",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_1-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Save as variable to be used at the last Prompt Template"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_1-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 61,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1510.6324834799852,
+        "y": -221.78240261184442
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_2",
+      "position": {
+        "x": 386.88037412001086,
+        "y": 47.66735767574478
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_2",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_2-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Instruct LLM to return a SQL query using the schema.\n\nRecommend to give few examples for higher accuracy. \n\nChange the prompt accordingly to suit the type of database you are using"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_2-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 182,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 386.88037412001086,
+        "y": 47.66735767574478
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_3",
+      "position": {
+        "x": 1148.366177280569,
+        "y": -330.2148999791981
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_3",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_3-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Check if SQL Query is valid\n\nIf not, avoid executing it and return to user "
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_3-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 81,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1148.366177280569,
+        "y": -330.2148999791981
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_4",
+      "position": {
+        "x": 1881.2554569013519,
+        "y": -435.79147130381756
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_4",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_4-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Execute the SQL query after validated, and get the list of results back.\n\nTo avoid long list of results overflowing token limit, try capping the length of result here"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_4-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 142,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1881.2554569013519,
+        "y": -435.79147130381756
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_5",
+      "position": {
+        "x": 1545.0242031958799,
+        "y": 428.37859733277077
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_5",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_5-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Fallback answer if SQL query is not valid"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_5-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 41,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1545.0242031958799,
+        "y": 428.37859733277077
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_6",
+      "position": {
+        "x": 2653.037036258241,
+        "y": 53.55638699917168
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_6",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_6-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "This is the final prompt.\n\nCombine the following:\nQuestion + SQL query + SQL result\n\nto generate a final answer"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_6-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 142,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 2653.037036258241,
+        "y": 53.55638699917168
+      },
+      "dragging": false
+    },
+    {
+      "id": "stickyNote_7",
+      "position": {
+        "x": 2267.355938520518,
+        "y": -56.64296923028309
+      },
+      "type": "stickyNote",
+      "data": {
+        "id": "stickyNote_7",
+        "label": "Sticky Note",
+        "version": 2,
+        "name": "stickyNote",
+        "type": "StickyNote",
+        "baseClasses": [
+          "StickyNote"
+        ],
+        "tags": [
+          "Utilities"
+        ],
+        "category": "Utilities",
+        "description": "Add a sticky note",
+        "inputParams": [
+          {
+            "label": "",
+            "name": "note",
+            "type": "string",
+            "rows": 1,
+            "placeholder": "Type something here",
+            "optional": true,
+            "id": "stickyNote_7-input-note-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "note": "Get the saved variable value to be used in prompt"
+        },
+        "outputAnchors": [
+          {
+            "id": "stickyNote_7-output-stickyNote-StickyNote",
+            "name": "stickyNote",
+            "label": "StickyNote",
+            "description": "Add a sticky note",
+            "type": "StickyNote"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 61,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 2267.355938520518,
+        "y": -56.64296923028309
+      },
+      "dragging": false
+    },
+    {
+      "id": "ollama_0",
+      "position": {
+        "x": 236.2472878357549,
+        "y": -837.8482265424757
+      },
+      "type": "customNode",
+      "data": {
+        "id": "ollama_0",
+        "label": "Ollama",
+        "version": 2,
+        "name": "ollama",
+        "type": "Ollama",
+        "baseClasses": [
+          "Ollama",
+          "LLM",
+          "BaseLLM",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "LLMs",
+        "description": "Wrapper around open source large language models on Ollama",
+        "inputParams": [
+          {
+            "label": "Base URL",
+            "name": "baseUrl",
+            "type": "string",
+            "default": "http://localhost:11434",
+            "id": "ollama_0-input-baseUrl-string"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "string",
+            "placeholder": "llama2",
+            "id": "ollama_0-input-modelName-string"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "description": "The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "ollama_0-input-temperature-number"
+          },
+          {
+            "label": "Top P",
+            "name": "topP",
+            "type": "number",
+            "description": "Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text. (Default: 0.9). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-topP-number"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "type": "number",
+            "description": "Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative. (Default: 40). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-topK-number"
+          },
+          {
+            "label": "Mirostat",
+            "name": "mirostat",
+            "type": "number",
+            "description": "Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-mirostat-number"
+          },
+          {
+            "label": "Mirostat ETA",
+            "name": "mirostatEta",
+            "type": "number",
+            "description": "Influences how quickly the algorithm responds to feedback from the generated text. A lower learning rate will result in slower adjustments, while a higher learning rate will make the algorithm more responsive. (Default: 0.1) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-mirostatEta-number"
+          },
+          {
+            "label": "Mirostat TAU",
+            "name": "mirostatTau",
+            "type": "number",
+            "description": "Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text. (Default: 5.0) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-mirostatTau-number"
+          },
+          {
+            "label": "Context Window Size",
+            "name": "numCtx",
+            "type": "number",
+            "description": "Sets the size of the context window used to generate the next token. (Default: 2048) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-numCtx-number"
+          },
+          {
+            "label": "Number of GQA groups",
+            "name": "numGqa",
+            "type": "number",
+            "description": "The number of GQA groups in the transformer layer. Required for some models, for example it is 8 for llama2:70b. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-numGqa-number"
+          },
+          {
+            "label": "Number of GPU",
+            "name": "numGpu",
+            "type": "number",
+            "description": "The number of layers to send to the GPU(s). On macOS it defaults to 1 to enable metal support, 0 to disable. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-numGpu-number"
+          },
+          {
+            "label": "Number of Thread",
+            "name": "numThread",
+            "type": "number",
+            "description": "Sets the number of threads to use during computation. By default, Ollama will detect this for optimal performance. It is recommended to set this value to the number of physical CPU cores your system has (as opposed to the logical number of cores). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-numThread-number"
+          },
+          {
+            "label": "Repeat Last N",
+            "name": "repeatLastN",
+            "type": "number",
+            "description": "Sets how far back for the model to look back to prevent repetition. (Default: 64, 0 = disabled, -1 = num_ctx). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-repeatLastN-number"
+          },
+          {
+            "label": "Repeat Penalty",
+            "name": "repeatPenalty",
+            "type": "number",
+            "description": "Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient. (Default: 1.1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-repeatPenalty-number"
+          },
+          {
+            "label": "Stop Sequence",
+            "name": "stop",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "AI assistant:",
+            "description": "Sets the stop sequences to use. Use comma to seperate different sequences. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-stop-string"
+          },
+          {
+            "label": "Tail Free Sampling",
+            "name": "tfsZ",
+            "type": "number",
+            "description": "Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (Default: 1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_0-input-tfsZ-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "ollama_0-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "baseUrl": "http://host.docker.internal:11434",
+          "modelName": "deepseek-r1:7b",
+          "temperature": "0.7",
+          "topP": "",
+          "topK": "",
+          "mirostat": "",
+          "mirostatEta": "",
+          "mirostatTau": "",
+          "numCtx": "",
+          "numGqa": "",
+          "numGpu": "",
+          "numThread": "",
+          "repeatLastN": "",
+          "repeatPenalty": "",
+          "stop": "",
+          "tfsZ": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "ollama_0-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+            "name": "ollama",
+            "label": "Ollama",
+            "description": "Wrapper around open source large language models on Ollama",
+            "type": "Ollama | LLM | BaseLLM | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 577,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 236.2472878357549,
+        "y": -837.8482265424757
+      },
+      "dragging": false
+    },
+    {
+      "id": "ollama_1",
+      "position": {
+        "x": 2440.0681920945253,
+        "y": -796.9012244775506
+      },
+      "type": "customNode",
+      "data": {
+        "id": "ollama_1",
+        "label": "Ollama",
+        "version": 2,
+        "name": "ollama",
+        "type": "Ollama",
+        "baseClasses": [
+          "Ollama",
+          "LLM",
+          "BaseLLM",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "LLMs",
+        "description": "Wrapper around open source large language models on Ollama",
+        "inputParams": [
+          {
+            "label": "Base URL",
+            "name": "baseUrl",
+            "type": "string",
+            "default": "http://localhost:11434",
+            "id": "ollama_1-input-baseUrl-string"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "string",
+            "placeholder": "llama2",
+            "id": "ollama_1-input-modelName-string"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "description": "The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "ollama_1-input-temperature-number"
+          },
+          {
+            "label": "Top P",
+            "name": "topP",
+            "type": "number",
+            "description": "Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text. (Default: 0.9). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-topP-number"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "type": "number",
+            "description": "Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative. (Default: 40). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-topK-number"
+          },
+          {
+            "label": "Mirostat",
+            "name": "mirostat",
+            "type": "number",
+            "description": "Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-mirostat-number"
+          },
+          {
+            "label": "Mirostat ETA",
+            "name": "mirostatEta",
+            "type": "number",
+            "description": "Influences how quickly the algorithm responds to feedback from the generated text. A lower learning rate will result in slower adjustments, while a higher learning rate will make the algorithm more responsive. (Default: 0.1) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-mirostatEta-number"
+          },
+          {
+            "label": "Mirostat TAU",
+            "name": "mirostatTau",
+            "type": "number",
+            "description": "Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text. (Default: 5.0) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-mirostatTau-number"
+          },
+          {
+            "label": "Context Window Size",
+            "name": "numCtx",
+            "type": "number",
+            "description": "Sets the size of the context window used to generate the next token. (Default: 2048) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-numCtx-number"
+          },
+          {
+            "label": "Number of GQA groups",
+            "name": "numGqa",
+            "type": "number",
+            "description": "The number of GQA groups in the transformer layer. Required for some models, for example it is 8 for llama2:70b. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-numGqa-number"
+          },
+          {
+            "label": "Number of GPU",
+            "name": "numGpu",
+            "type": "number",
+            "description": "The number of layers to send to the GPU(s). On macOS it defaults to 1 to enable metal support, 0 to disable. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-numGpu-number"
+          },
+          {
+            "label": "Number of Thread",
+            "name": "numThread",
+            "type": "number",
+            "description": "Sets the number of threads to use during computation. By default, Ollama will detect this for optimal performance. It is recommended to set this value to the number of physical CPU cores your system has (as opposed to the logical number of cores). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-numThread-number"
+          },
+          {
+            "label": "Repeat Last N",
+            "name": "repeatLastN",
+            "type": "number",
+            "description": "Sets how far back for the model to look back to prevent repetition. (Default: 64, 0 = disabled, -1 = num_ctx). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-repeatLastN-number"
+          },
+          {
+            "label": "Repeat Penalty",
+            "name": "repeatPenalty",
+            "type": "number",
+            "description": "Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient. (Default: 1.1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-repeatPenalty-number"
+          },
+          {
+            "label": "Stop Sequence",
+            "name": "stop",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "AI assistant:",
+            "description": "Sets the stop sequences to use. Use comma to seperate different sequences. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-stop-string"
+          },
+          {
+            "label": "Tail Free Sampling",
+            "name": "tfsZ",
+            "type": "number",
+            "description": "Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (Default: 1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_1-input-tfsZ-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "ollama_1-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "baseUrl": "http://host.docker.internal:11434",
+          "modelName": "deepseek-r1:7b",
+          "temperature": "0.4",
+          "topP": "",
+          "topK": "",
+          "mirostat": "",
+          "mirostatEta": "",
+          "mirostatTau": "",
+          "numCtx": "",
+          "numGqa": "",
+          "numGpu": "",
+          "numThread": "",
+          "repeatLastN": "",
+          "repeatPenalty": "",
+          "stop": "",
+          "tfsZ": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "ollama_1-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+            "name": "ollama",
+            "label": "Ollama",
+            "description": "Wrapper around open source large language models on Ollama",
+            "type": "Ollama | LLM | BaseLLM | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 577,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 2440.0681920945253,
+        "y": -796.9012244775506
+      },
+      "dragging": false
+    },
+    {
+      "id": "ollama_2",
+      "position": {
+        "x": 1557.1620922992922,
+        "y": 588.2531799036296
+      },
+      "type": "customNode",
+      "data": {
+        "id": "ollama_2",
+        "label": "Ollama",
+        "version": 2,
+        "name": "ollama",
+        "type": "Ollama",
+        "baseClasses": [
+          "Ollama",
+          "LLM",
+          "BaseLLM",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "LLMs",
+        "description": "Wrapper around open source large language models on Ollama",
+        "inputParams": [
+          {
+            "label": "Base URL",
+            "name": "baseUrl",
+            "type": "string",
+            "default": "http://localhost:11434",
+            "id": "ollama_2-input-baseUrl-string"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "string",
+            "placeholder": "llama2",
+            "id": "ollama_2-input-modelName-string"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "description": "The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "ollama_2-input-temperature-number"
+          },
+          {
+            "label": "Top P",
+            "name": "topP",
+            "type": "number",
+            "description": "Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text. (Default: 0.9). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-topP-number"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "type": "number",
+            "description": "Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative. (Default: 40). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-topK-number"
+          },
+          {
+            "label": "Mirostat",
+            "name": "mirostat",
+            "type": "number",
+            "description": "Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-mirostat-number"
+          },
+          {
+            "label": "Mirostat ETA",
+            "name": "mirostatEta",
+            "type": "number",
+            "description": "Influences how quickly the algorithm responds to feedback from the generated text. A lower learning rate will result in slower adjustments, while a higher learning rate will make the algorithm more responsive. (Default: 0.1) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-mirostatEta-number"
+          },
+          {
+            "label": "Mirostat TAU",
+            "name": "mirostatTau",
+            "type": "number",
+            "description": "Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text. (Default: 5.0) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-mirostatTau-number"
+          },
+          {
+            "label": "Context Window Size",
+            "name": "numCtx",
+            "type": "number",
+            "description": "Sets the size of the context window used to generate the next token. (Default: 2048) Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-numCtx-number"
+          },
+          {
+            "label": "Number of GQA groups",
+            "name": "numGqa",
+            "type": "number",
+            "description": "The number of GQA groups in the transformer layer. Required for some models, for example it is 8 for llama2:70b. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-numGqa-number"
+          },
+          {
+            "label": "Number of GPU",
+            "name": "numGpu",
+            "type": "number",
+            "description": "The number of layers to send to the GPU(s). On macOS it defaults to 1 to enable metal support, 0 to disable. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-numGpu-number"
+          },
+          {
+            "label": "Number of Thread",
+            "name": "numThread",
+            "type": "number",
+            "description": "Sets the number of threads to use during computation. By default, Ollama will detect this for optimal performance. It is recommended to set this value to the number of physical CPU cores your system has (as opposed to the logical number of cores). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-numThread-number"
+          },
+          {
+            "label": "Repeat Last N",
+            "name": "repeatLastN",
+            "type": "number",
+            "description": "Sets how far back for the model to look back to prevent repetition. (Default: 64, 0 = disabled, -1 = num_ctx). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-repeatLastN-number"
+          },
+          {
+            "label": "Repeat Penalty",
+            "name": "repeatPenalty",
+            "type": "number",
+            "description": "Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient. (Default: 1.1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-repeatPenalty-number"
+          },
+          {
+            "label": "Stop Sequence",
+            "name": "stop",
+            "type": "string",
+            "rows": 4,
+            "placeholder": "AI assistant:",
+            "description": "Sets the stop sequences to use. Use comma to seperate different sequences. Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-stop-string"
+          },
+          {
+            "label": "Tail Free Sampling",
+            "name": "tfsZ",
+            "type": "number",
+            "description": "Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (Default: 1). Refer to <a target=\"_blank\" href=\"https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values\">docs</a> for more details",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "ollama_2-input-tfsZ-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "ollama_2-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "baseUrl": "http://host.docker.internal:11434",
+          "modelName": "llama3.2",
+          "temperature": 0.9,
+          "topP": "",
+          "topK": "",
+          "mirostat": "",
+          "mirostatEta": "",
+          "mirostatTau": "",
+          "numCtx": "",
+          "numGqa": "",
+          "numGpu": "",
+          "numThread": "",
+          "repeatLastN": "",
+          "repeatPenalty": "",
+          "stop": "",
+          "tfsZ": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "ollama_2-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+            "name": "ollama",
+            "label": "Ollama",
+            "description": "Wrapper around open source large language models on Ollama",
+            "type": "Ollama | LLM | BaseLLM | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 577,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1557.1620922992922,
+        "y": 588.2531799036296
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "promptTemplate_0",
+      "sourceHandle": "promptTemplate_0-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+      "target": "llmChain_0",
+      "targetHandle": "llmChain_0-input-prompt-BasePromptTemplate",
+      "type": "buttonedge",
+      "id": "promptTemplate_0-promptTemplate_0-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable-llmChain_0-llmChain_0-input-prompt-BasePromptTemplate",
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "source": "customFunction_1",
+      "sourceHandle": "customFunction_1-output-output-string|number|boolean|json|array",
+      "target": "promptTemplate_1",
+      "targetHandle": "promptTemplate_1-input-promptValues-json",
+      "type": "buttonedge",
+      "id": "customFunction_1-customFunction_1-output-output-string|number|boolean|json|array-promptTemplate_1-promptTemplate_1-input-promptValues-json",
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "source": "promptTemplate_1",
+      "sourceHandle": "promptTemplate_1-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+      "target": "llmChain_1",
+      "targetHandle": "llmChain_1-input-prompt-BasePromptTemplate",
+      "type": "buttonedge",
+      "id": "promptTemplate_1-promptTemplate_1-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable-llmChain_1-llmChain_1-input-prompt-BasePromptTemplate",
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "source": "getVariable_1",
+      "sourceHandle": "getVariable_1-output-output-string|number|boolean|json|array",
+      "target": "promptTemplate_1",
+      "targetHandle": "promptTemplate_1-input-promptValues-json",
+      "type": "buttonedge",
+      "id": "getVariable_1-getVariable_1-output-output-string|number|boolean|json|array-promptTemplate_1-promptTemplate_1-input-promptValues-json",
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "source": "setVariable_1",
+      "sourceHandle": "setVariable_1-output-output-string|number|boolean|json|array",
+      "target": "customFunction_1",
+      "targetHandle": "customFunction_1-input-functionInputVariables-json",
+      "type": "buttonedge",
+      "id": "setVariable_1-setVariable_1-output-output-string|number|boolean|json|array-customFunction_1-customFunction_1-input-functionInputVariables-json",
+      "data": {
+        "label": ""
+      }
+    },
+    {
+      "source": "llmChain_0",
+      "sourceHandle": "llmChain_0-output-outputPrediction-string|json",
+      "target": "ifElseFunction_0",
+      "targetHandle": "ifElseFunction_0-input-functionInputVariables-json",
+      "type": "buttonedge",
+      "id": "llmChain_0-llmChain_0-output-outputPrediction-string|json-ifElseFunction_0-ifElseFunction_0-input-functionInputVariables-json"
+    },
+    {
+      "source": "ifElseFunction_0",
+      "sourceHandle": "ifElseFunction_0-output-returnTrue-string|number|boolean|json|array",
+      "target": "setVariable_1",
+      "targetHandle": "setVariable_1-input-input-string | number | boolean | json | array",
+      "type": "buttonedge",
+      "id": "ifElseFunction_0-ifElseFunction_0-output-returnTrue-string|number|boolean|json|array-setVariable_1-setVariable_1-input-input-string | number | boolean | json | array"
+    },
+    {
+      "source": "ifElseFunction_0",
+      "sourceHandle": "ifElseFunction_0-output-returnFalse-string|number|boolean|json|array",
+      "target": "promptTemplate_2",
+      "targetHandle": "promptTemplate_2-input-promptValues-json",
+      "type": "buttonedge",
+      "id": "ifElseFunction_0-ifElseFunction_0-output-returnFalse-string|number|boolean|json|array-promptTemplate_2-promptTemplate_2-input-promptValues-json"
+    },
+    {
+      "source": "promptTemplate_2",
+      "sourceHandle": "promptTemplate_2-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable",
+      "target": "llmChain_2",
+      "targetHandle": "llmChain_2-input-prompt-BasePromptTemplate",
+      "type": "buttonedge",
+      "id": "promptTemplate_2-promptTemplate_2-output-promptTemplate-PromptTemplate|BaseStringPromptTemplate|BasePromptTemplate|Runnable-llmChain_2-llmChain_2-input-prompt-BasePromptTemplate"
+    },
+    {
+      "source": "customFunction_2",
+      "sourceHandle": "customFunction_2-output-output-string|number|boolean|json|array",
+      "target": "promptTemplate_0",
+      "targetHandle": "promptTemplate_0-input-promptValues-json",
+      "type": "buttonedge",
+      "id": "customFunction_2-customFunction_2-output-output-string|number|boolean|json|array-promptTemplate_0-promptTemplate_0-input-promptValues-json"
+    },
+    {
+      "source": "ollama_0",
+      "sourceHandle": "ollama_0-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+      "target": "llmChain_0",
+      "targetHandle": "llmChain_0-input-model-BaseLanguageModel",
+      "type": "buttonedge",
+      "id": "ollama_0-ollama_0-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable-llmChain_0-llmChain_0-input-model-BaseLanguageModel"
+    },
+    {
+      "source": "ollama_1",
+      "sourceHandle": "ollama_1-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+      "target": "llmChain_1",
+      "targetHandle": "llmChain_1-input-model-BaseLanguageModel",
+      "type": "buttonedge",
+      "id": "ollama_1-ollama_1-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable-llmChain_1-llmChain_1-input-model-BaseLanguageModel"
+    },
+    {
+      "source": "ollama_2",
+      "sourceHandle": "ollama_2-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable",
+      "target": "llmChain_2",
+      "targetHandle": "llmChain_2-input-model-BaseLanguageModel",
+      "type": "buttonedge",
+      "id": "ollama_2-ollama_2-output-ollama-Ollama|LLM|BaseLLM|BaseLanguageModel|Runnable-llmChain_2-llmChain_2-input-model-BaseLanguageModel"
+    }
+  ]
+}
